@@ -1,0 +1,82 @@
+public class FileUtil
+    {
+        /// <summary>
+        /// 从文件中读取信息
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        /// <returns></returns>
+        public static string GetInfoFromFile(string path)
+        {
+            StringBuilder str = new StringBuilder();
+            StreamReader reader = null;
+            try
+            {
+                 reader = new StreamReader(path, Encoding.Default);
+                while (!reader.EndOfStream)
+                {
+                    str.Append(reader.ReadLine());
+                }
+            }
+            catch 
+            {
+                return null;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return str.ToString();
+        }
+ 
+        /// <summary>
+        /// 返回指定目录中的文件名称
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <returns></returns>
+        public static string[] GetFileNameFromFolder(string folderPath)
+        {
+            try
+            {
+                return Directory.GetFiles(folderPath);
+            }
+            catch(DirectoryNotFoundException ex)
+            {
+                return null;
+            }
+        }
+ 
+        /// <summary>
+        /// 往文件中写数据
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <param name="info">数据</param>
+        /// <returns></returns>
+        public static bool WriteToFile(string path, string info)
+        {
+            if (!Directory.Exists(path))
+            {//创建路径
+               // Directory.CreateDirectory(path);
+                FileInfo file = new FileInfo(path);
+                FileStream f = file.Create();
+                f.Close();
+            }
+            StreamWriter writer = null;
+            try
+            {
+                writer = new StreamWriter(path, false, Encoding.Default);
+                writer.Write(info);
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                writer.Close();
+            }
+            return true;
+        }
+
+————————————————
+版权声明：本文为CSDN博主「叶子的翅膀」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/xiaoxiqinqinbaobao/article/details/8137797
